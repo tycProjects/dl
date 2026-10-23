@@ -3,20 +3,20 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#f2f2f7" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#111112" media="(prefers-color-scheme: dark)">
 <title>Download</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23007aff'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234dd8a6'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11' fill='none' stroke='%23062a1d' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#f2f2f7;--grp:#ffffff;--ink:#111114;--mut:#6c6c72;--line:rgba(60,60,67,.18);
-  --acc:#007aff;--accInk:#ffffff;--ok:#1f9d47;--okInk:#ffffff;--err:#d62f2f;--bar:rgba(242,242,247,.8);--sk:#e3e3e8;
+  --acc:#16a77a;--accInk:#ffffff;--ok:#1f9d47;--okInk:#ffffff;--good:#1f9d47;--err:#d62f2f;--bar:rgba(242,242,247,.8);--sk:#e3e3e8;
   --spring:cubic-bezier(.34,1.56,.64,1);--ease:cubic-bezier(.2,.8,.2,1);
 }
 @media (prefers-color-scheme:dark){:root{
-  --bg:#000000;--grp:#1c1c1e;--ink:#f5f5f7;--mut:#9a9aa1;--line:rgba(84,84,88,.55);
-  --acc:#0a84ff;--accInk:#ffffff;--ok:#30d158;--okInk:#04210d;--err:#ff6961;--bar:rgba(0,0,0,.72);--sk:#2c2c2e;
+  --bg:#111112;--grp:#1d1d20;--ink:#f5f5f7;--mut:#8e8e93;--line:rgba(255,255,255,.1);
+  --acc:#4dd8a6;--accInk:#062a1d;--ok:#1f4a3b;--okInk:#4dd8a6;--good:#4dd8a6;--err:#ff6961;--bar:rgba(17,17,18,.8);--sk:#2a2a2e;
 }}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{-webkit-text-size-adjust:100%}
@@ -63,9 +63,18 @@ h1{margin:0;font-size:28px;line-height:1.14;font-weight:700;letter-spacing:-.025
 .btn:focus-visible,.ghost:focus-visible,.row-btn:focus-visible,.mini:focus-visible{outline:3px solid var(--acc);outline-offset:3px}
 .lbl{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:9px;transition:transform .5s var(--spring),opacity .25s}
 .lbl svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:2.3;stroke-linecap:round;stroke-linejoin:round}
-.lbl-b{transform:translateY(120%);opacity:0}
+.lbl-b,.lbl-c{transform:translateY(120%);opacity:0}
+.lbl-c .spin{width:19px;height:19px;border-radius:50%;border:2.5px solid currentColor;border-right-color:transparent;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.btn .prog{position:absolute;left:0;top:0;bottom:0;width:0;background:rgba(0,0,0,.18);transition:width .2s linear;pointer-events:none}
+/* loading: waiting for the download to actually begin / in progress */
+.btn.loading{pointer-events:none}
+.btn.loading .lbl-a{transform:translateY(-120%);opacity:0}
+.btn.loading .lbl-c{transform:none;opacity:1}
+/* done: only after the file has really been received */
 .btn.done{background:var(--ok);color:var(--okInk)}
-.btn.done .lbl-a{transform:translateY(-120%);opacity:0}
+.btn.done .lbl-a,.btn.done .lbl-c{transform:translateY(-120%);opacity:0}
+.btn.done .prog{opacity:0}
 .btn.done .lbl-b{transform:none;opacity:1}
 .btn.done .tick{stroke-dasharray:24;stroke-dashoffset:24;animation:draw .5s .15s var(--ease) forwards}
 @keyframes draw{to{stroke-dashoffset:0}}
@@ -91,7 +100,7 @@ h1{margin:0;font-size:28px;line-height:1.14;font-weight:700;letter-spacing:-.025
 .row+.row::before,.disc+.row::before{content:"";position:absolute;left:16px;right:0;top:0;border-top:1px solid var(--line)}
 .row .k{color:var(--ink)}
 .row .v{color:var(--mut);text-align:right;font-variant-numeric:tabular-nums;min-width:0;overflow-wrap:anywhere;display:flex;align-items:center;gap:7px}
-.v .ok{width:17px;height:17px;flex:none;fill:none;stroke:var(--ok);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.v .ok{width:17px;height:17px;flex:none;fill:none;stroke:var(--good);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
 .row-btn{cursor:pointer}
 .row-btn .chev{width:15px;height:15px;flex:none;fill:none;stroke:var(--mut);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;transition:transform .45s var(--spring)}
 .row-btn[aria-expanded="true"] .chev{transform:rotate(90deg)}
@@ -131,6 +140,8 @@ code{display:block;padding:11px 12px;border-radius:10px;background:var(--bg);fon
 
   <a class="btn hide" id="btn" rel="nofollow">
     <span class="lbl lbl-a"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0l-4-4m4 4l4-4M5 20h14"/></svg>Download</span>
+    <span class="prog" id="prog" aria-hidden="true"></span>
+    <span class="lbl lbl-c" aria-hidden="true"><span class="spin"></span><span id="ldTxt">Starting…</span></span>
     <span class="lbl lbl-b" aria-hidden="true"><svg viewBox="0 0 24 24"><path class="tick" d="M5 12.5l4.5 4.5L19 7.5"/></svg>Download started</span>
   </a>
   <button class="ghost hide" id="copy" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1"/></svg>Copy link</button>
@@ -144,7 +155,7 @@ code{display:block;padding:11px 12px;border-radius:10px;background:var(--bg);fon
   <h2 class="gh hide fade" id="aboutH" style="font-weight:400">About this file</h2>
   <section class="group hide fade" id="about">
     <div class="row"><span class="k">File type</span><span class="v">Android app (APK)</span></div>
-    <div class="row"><span class="k">Hosted on</span><span class="v">GitHub</span></div>
+    <div class="row"><span class="k">Hosted on</span><span class="v">WZH 2 APK</span></div>
     <div class="row hide" id="httpsRow"><span class="k">Connection</span><span class="v"><svg class="ok" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Encrypted (HTTPS)</span></div>
     <button class="row row-btn hide" id="hashRow" type="button" aria-expanded="false" aria-controls="hashBox">
       <span class="k">Checksum</span>
@@ -241,11 +252,52 @@ if (!tag || !/^[A-Za-z0-9_.-]{3,80}$/.test(tag)) {
       void app.offsetWidth;            // restart the entrance
       app.classList.add('ready');
 
-      let doneTimer;
-      $('btn').addEventListener('click', () => {
-        $('btn').classList.add('done');
-        clearTimeout(doneTimer);
-        doneTimer = setTimeout(() => $('btn').classList.remove('done'), 4200);
+      const btn = $('btn');
+      let doneTimer, busy = false;
+      const reset = (ms) => { clearTimeout(doneTimer); doneTimer = setTimeout(() => { btn.classList.remove('done', 'loading'); $('prog').style.width = '0'; busy = false; }, ms); };
+      const saveBlob = (blob, fname) => {
+        const u = URL.createObjectURL(blob);
+        const l = document.createElement('a');
+        l.href = u; l.download = fname; l.rel = 'nofollow';
+        document.body.appendChild(l); l.click(); l.remove();
+        setTimeout(() => URL.revokeObjectURL(u), 60000);
+      };
+      btn.addEventListener('click', async (ev) => {
+        ev.preventDefault();
+        if (busy) return;
+        busy = true;
+        btn.classList.add('loading');
+        $('ldTxt').textContent = 'Starting…';
+        $('prog').style.width = '0';
+        try {
+          const res = await fetch(a.browser_download_url);      // resolves only once the server starts sending
+          if (!res.ok || !res.body) throw new Error('nostream');
+          const total = Number(res.headers.get('content-length')) || a.size || 0;
+          const reader = res.body.getReader();
+          const parts = [];
+          let got = 0;
+          for (;;) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            parts.push(value); got += value.length;               // first chunk = the download has really begun
+            if (total) {
+              const p = Math.min(100, Math.round(got / total * 100));
+              $('ldTxt').textContent = 'Downloading ' + p + '%';
+              $('prog').style.width = p + '%';
+            } else $('ldTxt').textContent = 'Downloading…';
+          }
+          saveBlob(new Blob(parts, { type: 'application/vnd.android.package-archive' }), a.name);
+          btn.classList.remove('loading');
+          btn.classList.add('done');
+          reset(4200);
+        } catch (e) {
+          // fallback: let the browser handle it natively, confirm only after a real navigation was handed off
+          $('ldTxt').textContent = 'Starting…';
+          const l = document.createElement('a');
+          l.href = a.browser_download_url; l.rel = 'nofollow';
+          document.body.appendChild(l); l.click(); l.remove();
+          setTimeout(() => { btn.classList.remove('loading'); btn.classList.add('done'); reset(4200); }, 1800);
+        }
       });
       $('copy').onclick = () => copyText(location.href, 'Link copied');
     })
